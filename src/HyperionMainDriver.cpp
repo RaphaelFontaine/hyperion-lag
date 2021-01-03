@@ -138,7 +138,9 @@ void HyperionMainDriver::load_mesh()
 
     // Insert connectivites, i.e. nodes connected to a cell
     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // Write code here
+    vtkIdType connect[4]={(vtkIdType)nodes[4*c],(vtkIdType)nodes[4*c+1],(vtkIdType)nodes[4*c+2],(vtkIdType)nodes[4*c+3]};
+
+    m_mesh->InsertNextCell(VTK_QUAD,4,connect);
     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   }
 
