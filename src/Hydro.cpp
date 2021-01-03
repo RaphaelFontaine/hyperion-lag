@@ -34,7 +34,13 @@ void add_cell_field(vtkSmartPointer<vtkUnstructuredGrid> mesh,
 {
   // Create a VTK double array, insert values and attach it to the mesh
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  // TODO : write code here
+  vtkSmartPointer<vtkDoubleArray> tab = vtkDoubleArray::New();
+  tab -> SetName(field_name.c_str());
+  tab -> SetNumberOfComponents(1);
+  for(size_t i=0;i<field.size();i++){
+    tab->InsertNextValue(field[i]);
+  }
+  mesh->GetPointData()->AddArray(tab);
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 }
 
@@ -47,7 +53,13 @@ void add_node_field(vtkSmartPointer<vtkUnstructuredGrid> mesh,
 {
   // Create a VTK double array, insert values and attach it to the mesh
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  // TODO : write code here
+  vtkSmartPointer<vtkDoubleArray> tab = vtkDoubleArray::New();
+  tab -> SetName(field_name.c_str());
+  tab -> SetNumberOfComponents(1);
+  for(size_t i=0;i<field.size();i++){
+    tab->InsertNextValue(field[i]);
+  }
+  mesh->GetPointData()->AddArray(tab);
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 }
 
@@ -60,7 +72,13 @@ void add_vector_node_field(vtkSmartPointer<vtkUnstructuredGrid> mesh,
 {
   // Create a VTK double array, insert values and attach it to the mesh
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  // TODO : write code here
+  vtkSmartPointer<vtkDoubleArray> tab = vtkDoubleArray::New();
+  tab -> SetName(field_name.c_str());
+  tab -> SetNumberOfComponents(2);
+  for(size_t i=0;i<field.size();i++){
+    tab->InsertNextTuple2(field[i].first,field[i].second);
+  }
+  mesh->GetPointData()->AddArray(tab);
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 }
 
@@ -92,7 +110,8 @@ void Hydro::init()
 
     // Get node n coordinates and save them to m_vars->m_node_coord
     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // TODO : write code here
+    m_mesh->GetPoint(n,coord);
+    m_vars->m_node_coord.push_back({coord[0],coord[1]});
     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   }
 
@@ -106,9 +125,9 @@ void Hydro::init()
 
     // Get cell c to retrieve its node ids
     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // TODO : write code here
+    auto cellule=this->m_mesh->GetCell(c);
     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    int nb_nodes_for_cell = 1; // Change this line to get the correct number of nodes
+    int nb_nodes_for_cell = cellule->GetNumberOfPoints(); // Change this line to get the correct number of nodes
     for (int n = 0; n < nb_nodes_for_cell; ++n) {
       auto node = n; // Change this line to get the global node id
       m_vars->m_node_mass[node] += node_mass_contrib;
